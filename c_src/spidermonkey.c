@@ -29,7 +29,7 @@ void free_error(spidermonkey_state *state);
 static JSClass global_class = {
     "global", JSCLASS_GLOBAL_FLAGS,
     JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,  
-    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, NULL,                    
+    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, NULL,
     NULL /* checkAccess */, NULL /* call */, NULL /* hasInstance */, NULL /* construct */, NULL,
     { NULL }
 };
