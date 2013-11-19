@@ -28,9 +28,10 @@ void free_error(spidermonkey_state *state);
 /* The class of the global object. */
 static JSClass global_class = {
     "global", JSCLASS_GLOBAL_FLAGS,
-    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub,
-    JSCLASS_NO_OPTIONAL_MEMBERS
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,  
+    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, NULL,                    
+    NULL /* checkAccess */, NULL /* call */, NULL /* hasInstance */, NULL /* construct */, NULL,
+    { NULL }
 };
 
 char *copy_string(const char *source) {
@@ -162,7 +163,8 @@ spidermonkey_vm *sm_initialize(long thread_stack, long heap_size) {
   JS_SetOptions(vm->context, JSOPTION_STRICT);
   JS_SetOptions(vm->context, JSOPTION_COMPILE_N_GO);
   JS_SetOptions(vm->context, JSVERSION_LATEST);
-  vm->global = JS_NewObject(vm->context, &global_class, NULL, NULL);
+
+  vm->global = JS_NewGlobalObject(vm->context, &global_class, NULL);
   JS_InitStandardClasses(vm->context, vm->global);
   JS_SetErrorReporter(vm->context, on_error);
   JS_SetOperationCallback(vm->context, on_branch);

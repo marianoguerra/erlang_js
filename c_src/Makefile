@@ -31,12 +31,12 @@ $(LIB_DIR)/libjs.a: $(LIB_DIR)/libnspr4.a
 #	@for I in patches/js-*.patch; do \
 #		($(PATCH) -p1 < $${I} || echo "Skipping patch"); \
 #	done
-	(cd $(JS_DIR)/src/ && ./configure --enable-threadsafe --with-nspr-cflags='-I$(INC_DIR)/nspr' --with-nspr-libs="-L$(LIB_DIR) -lplds4 -lplc4 -lnspr4 -lpthread -ldl")
+	(cd $(JS_DIR)/src/ && ./configure --enable-threadsafe --with-nspr-cflags='-I$(INC_DIR)/nspr' --with-nspr-libs="-L$(LIB_DIR) -lplds4 -lplc4 -lnspr4 -lpthread -ldl -lm -lz -ldl")
 
 	@$(MAKE) -C $(JS_DIR)/src BUILD_OPT=1 JS_DIST=$(SYSTEM_DIR) \
 		JS_THREADSAFE=1 \
 		XCFLAGS="-DHAVE_VA_COPY -DVA_COPY=va_copy $(CFLAGS)" \
-		XLDFLAGS="$(LDFLAGS)"
+		XLDFLAGS="$(LDFLAGS) -lplds4 -lplc4 -lnspr4 -lpthread -ldl -lm -lz -ldl -lstdc++"
 	@mkdir $(INC_DIR)/js
 	@cp $(JS_DIR)/src/*.h $(INC_DIR)/js
 	@cp -r $(JS_DIR)/src/gc $(INC_DIR)/js
